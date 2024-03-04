@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "131818180841",
+    "project_id": "fchat-96803",
+    "storage_bucket": "fchat-96803.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:131818180841:android:9d0569246ad6b8e3806078",
+        "android_client_info": {
+          "package_name": "com.example.f_chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "131818180841-lv1ln41rfjm4nrot7ehfttv3vpcptqev.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.f_chat",
+            "certificate_hash": "6e4b14598aa45eb300955ba58b6504ffa8609fde"
+          }
+        },
+        {
+          "client_id": "131818180841-4a7mt61gn67jm81hv2hfkdia31gdctos.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDd94w8uF5nnFpiS81oENXPYxl5bFBcbsU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "131818180841-4a7mt61gn67jm81hv2hfkdia31gdctos.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "131818180841-pos4sv06kcpfmpjs78q2pu33r44c76r9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.fChat"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

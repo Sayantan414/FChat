@@ -1,10 +1,7 @@
-import 'dart:math';
-
 import 'package:f_chat/api/apis.dart';
 import 'package:f_chat/main.dart';
 import 'package:f_chat/screens/home_screen.dart';
 import 'package:f_chat/screens/login_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

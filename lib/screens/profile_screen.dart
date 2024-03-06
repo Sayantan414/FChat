@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:f_chat/api/apis.dart';
 import 'package:f_chat/helper/dialogs.dart';
 import 'package:f_chat/main.dart';
@@ -6,6 +8,7 @@ import 'package:f_chat/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key, required this.user});
@@ -17,6 +20,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final _formKey = GlobalKey<FormState>();
+  String? _image;
 
   @override
   Widget build(BuildContext context) {
@@ -63,24 +67,45 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   children: [
                     Stack(
                       children: [
-                        Container(
-                          margin: const EdgeInsets.only(
-                              top: 20), // Adjust the value as needed
-                          child: CircleAvatar(
-                            radius: 60, // Adjust the value as needed
-                            backgroundImage: widget.user.image != ''
-                                ? NetworkImage(widget.user.image)
-                                : null,
-                            child: widget.user.image == ''
-                                ? const Icon(Icons.person)
-                                : null,
-                          ),
-                        ),
+                        _image != null
+                            ? Container(
+                                margin: const EdgeInsets.only(
+                                    top: 20), // Adjust the value as needed
+                                child: CircleAvatar(
+                                  radius: 60, // Adjust the value as needed
+                                  child: ClipOval(
+                                    child: Image.file(
+                                      File(_image!),
+                                      fit: BoxFit
+                                          .cover, // Ensure the image fits fully within the CircleAvatar
+                                      width:
+                                          120, // Set the width to the diameter of the CircleAvatar (2 * radius)
+                                      height:
+                                          120, // Set the height to the diameter of the CircleAvatar (2 * radius)
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : Container(
+                                margin: const EdgeInsets.only(
+                                    top: 20), // Adjust the value as needed
+                                child: CircleAvatar(
+                                  radius: 60, // Adjust the value as needed
+                                  backgroundImage: widget.user.image != ''
+                                      ? NetworkImage(widget.user.image)
+                                      : null,
+                                  child: widget.user.image == ''
+                                      ? const Icon(Icons.person)
+                                      : null,
+                                ),
+                              ),
                         Positioned(
                           bottom: -10,
                           right: -10,
                           child: MaterialButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              _showBottomSheet();
+                            },
                             shape: const CircleBorder(),
                             color: Colors.white,
                             child: const Icon(Icons.edit, color: Colors.blue),
@@ -144,5 +169,73 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           )),
     );
+  }
+
+  void _showBottomSheet() {
+    showModalBottomSheet(
+        context: context,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+        builder: (_) {
+          return ListView(
+            shrinkWrap: true,
+            padding:
+                EdgeInsets.only(top: mq.height * .03, bottom: mq.height * .05),
+            children: [
+              const Text(
+                'Pick Profile Picture',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+              ),
+              SizedBox(height: mq.height * .02),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          shape: const CircleBorder(),
+                          fixedSize: Size(mq.width * .3, mq.height * .15)),
+                      onPressed: () async {
+                        final ImagePicker picker = ImagePicker();
+                        final XFile? pickedFile =
+                            await picker.pickImage(source: ImageSource.gallery);
+                        if (pickedFile != null) {
+                          setState(() {
+                            _image = pickedFile.path;
+                          });
+                          Navigator.pop(context);
+                        } else {
+                          // No image was picked
+                          print('No image selected.');
+                        }
+                      },
+                      child: Image.asset('images/gallery-icon-29.jpg')),
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          shape: const CircleBorder(),
+                          fixedSize: Size(mq.width * .3, mq.height * .15)),
+                      onPressed: () async {
+                        final ImagePicker picker = ImagePicker();
+                        final XFile? pickedFile =
+                            await picker.pickImage(source: ImageSource.camera);
+                        if (pickedFile != null) {
+                          setState(() {
+                            _image = pickedFile.path;
+                          });
+                          Navigator.pop(context);
+                        } else {
+                          // No image was picked
+                          print('No image selected.');
+                        }
+                      },
+                      child: Image.asset('images/camera.png'))
+                ],
+              )
+            ],
+          );
+        });
   }
 }

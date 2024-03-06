@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:f_chat/api/apis.dart';
 import 'package:f_chat/main.dart';
 import 'package:f_chat/models/chat_user.dart';
+import 'package:f_chat/screens/profile_screen.dart';
 import 'package:f_chat/widgets/chat_user_card.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -16,6 +17,12 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<ChatUser> list = [];
+
+  @override
+  void initState() {
+    super.initState();
+    APIs.getSelfInfo();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +42,14 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             actions: [
               IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
-              IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert))
+              IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => ProfileScreen(user: APIs.me)));
+                  },
+                  icon: const Icon(Icons.more_vert))
             ],
           ),
         ),
@@ -50,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         body: StreamBuilder(
-          stream: APIs.firestore.collection('users').snapshots(),
+          stream: APIs.getAllUsers(),
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:

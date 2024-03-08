@@ -4,6 +4,7 @@ import 'package:f_chat/models/chat_user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key, required this.user});
@@ -35,7 +36,48 @@ class _ChatScreenState extends State<ChatScreen> {
           flexibleSpace: _appBar(),
         ),
         body: Column(
-          children: [_chatInput()],
+          children: [
+            Expanded(
+              child: StreamBuilder(
+                // stream: APIs.getAllUsers(),
+                builder: (context, snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.waiting:
+                    case ConnectionState.none:
+                    // return const Center(child: CircularProgressIndicator());
+
+                    case ConnectionState.active:
+                    case ConnectionState.done:
+                      // final data = snapshot.data?.docs;
+                      // _list = data
+                      //         ?.map((e) => ChatUser.fromJson(e.data()))
+                      //         .toList() ??
+                      //     [];
+
+                      final _list = ['Hi', 'Hello'];
+
+                      if (_list.isNotEmpty) {
+                        return ListView.builder(
+                            itemCount: _list.length,
+                            padding: EdgeInsets.only(top: mq.height * .01),
+                            physics: const BouncingScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              return Text('Message: ${_list[index]}');
+                            });
+                      } else {
+                        return const Center(
+                            child: Text(
+                          'Say Hii 👋',
+                          style: TextStyle(fontSize: 20),
+                        ));
+                      }
+                  }
+                },
+                stream: null,
+              ),
+            ),
+            _chatInput()
+          ],
         ),
       ),
     );

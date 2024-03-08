@@ -199,12 +199,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           fixedSize: Size(mq.width * .3, mq.height * .15)),
                       onPressed: () async {
                         final ImagePicker picker = ImagePicker();
-                        final XFile? pickedFile =
-                            await picker.pickImage(source: ImageSource.gallery);
+                        final XFile? pickedFile = await picker.pickImage(
+                            source: ImageSource.gallery, imageQuality: 80);
                         if (pickedFile != null) {
                           setState(() {
                             _image = pickedFile.path;
                           });
+                          APIs.updateProfilePicture(File(_image!));
                           Navigator.pop(context);
                         } else {
                           // No image was picked
@@ -219,12 +220,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           fixedSize: Size(mq.width * .3, mq.height * .15)),
                       onPressed: () async {
                         final ImagePicker picker = ImagePicker();
-                        final XFile? pickedFile =
-                            await picker.pickImage(source: ImageSource.camera);
+                        final XFile? pickedFile = await picker.pickImage(
+                            source: ImageSource.camera, imageQuality: 80);
                         if (pickedFile != null) {
                           setState(() {
                             _image = pickedFile.path;
                           });
+                          APIs.updateProfilePicture(File(_image!));
                           Navigator.pop(context);
                         } else {
                           // No image was picked

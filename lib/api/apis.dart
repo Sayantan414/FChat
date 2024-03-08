@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:f_chat/models/chat_user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -60,5 +62,23 @@ class APIs {
         .collection('users')
         .where('id', isNotEqualTo: user.uid)
         .snapshots();
+  }
+
+  static Future<void> updateProfilePicture(File file) async {
+    final ext = file.path.split('.').last;
+
+    final ref = storage.ref().child('profile_picture/${user.uid}.$ext');
+
+    await ref
+        .putFile(file, SettableMetadata(contentType: 'image/$ext'))
+        .then((p0) {
+      print('Data Transferred: ${p0.bytesTransferred / 1000} kb');
+    });
+
+    me.image = await ref.getDownloadURL();
+    await firestore
+        .collection('users')
+        .doc(user.uid)
+        .update({'image': me.image});
   }
 }

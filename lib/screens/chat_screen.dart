@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:f_chat/api/apis.dart';
 import 'package:f_chat/main.dart';
 import 'package:f_chat/models/chat_user.dart';
 import 'package:flutter/cupertino.dart';
@@ -39,12 +40,12 @@ class _ChatScreenState extends State<ChatScreen> {
           children: [
             Expanded(
               child: StreamBuilder(
-                // stream: APIs.getAllUsers(),
+                stream: APIs.getAllMessages(),
                 builder: (context, snapshot) {
                   switch (snapshot.connectionState) {
                     case ConnectionState.waiting:
                     case ConnectionState.none:
-                    // return const Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
 
                     case ConnectionState.active:
                     case ConnectionState.done:
@@ -73,7 +74,6 @@ class _ChatScreenState extends State<ChatScreen> {
                       }
                   }
                 },
-                stream: null,
               ),
             ),
             _chatInput()
